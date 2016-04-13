@@ -7,9 +7,9 @@ WELCOME_MESSAGE = "Welcome to Acak Kata! Preparing words..."
 
 INF = 2000000
 MAX_GUESS = 10
-MIN_WORD_LENGTH = {"EASY": 2, "MEDIUM": 6, "HARD": 11}
-MAX_WORD_LENGTH = {"EASY": 5, "MEDIUM": 10, "HARD": INF}
-SCORE_PER_DIFFICULITY = {"EASY": 10, "MEDIUM": 20, "HARD": 40}
+
+# Minimum word length, maximum word length, and base score for each difficulity
+SETTINGS = {"EASY": (2, 5, 10), "MEDIUM": (6, 10, 20), "HARD": (11, INF, 40)}
 
 DIFFICULITIES = ["EASY", "MEDIUM", "HARD"]
 
@@ -33,9 +33,7 @@ if __name__ == "__main__":
     while difficulity not in DIFFICULITIES:
         difficulity = raw_input("Select your difficulity (EASY / MEDIUM / HARD): ").upper()
 
-    min_length = MIN_WORD_LENGTH[difficulity]
-    max_length = MAX_WORD_LENGTH[difficulity]
-    base_score = SCORE_PER_DIFFICULITY[difficulity]
+    min_length, max_length, base_score = SETTINGS[difficulity]
 
     playing = True
     total_score = 0
@@ -71,7 +69,6 @@ if __name__ == "__main__":
                     print "Wrong! Number of guesses left:", guesses_left
 
         play_again = ""
-
         while play_again != "YES" and play_again != "NO":
             play_again = raw_input("Play again? [YES/NO] ").upper()
 
