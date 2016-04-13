@@ -9,6 +9,7 @@ INF = 2000000
 MAX_GUESS = 10
 MIN_WORD_LENGTH = {"EASY": 2, "MEDIUM": 6, "HARD": 11}
 MAX_WORD_LENGTH = {"EASY": 5, "MEDIUM": 10, "HARD": INF}
+SCORE_PER_DIFFICULITY = {"EASY": 10, "MEDIUM": 20, "HARD": 40}
 
 DIFFICULITIES = ["EASY", "MEDIUM", "HARD"]
 
@@ -32,8 +33,10 @@ if __name__ == "__main__":
 
         min_length = MIN_WORD_LENGTH[difficulity]
         max_length = MAX_WORD_LENGTH[difficulity]
+        base_score = SCORE_PER_DIFFICULITY[difficulity]
 
         playing = True
+        total_score = 0
 
         # Start the game loop
         while playing:
@@ -55,6 +58,7 @@ if __name__ == "__main__":
 
                 if guess == word:
                     correct = True
+                    total_score += base_score * guesses_left
                     print "Correct!"
                 else:
                     guesses_left -= 1
@@ -72,4 +76,5 @@ if __name__ == "__main__":
             if play_again == "NO":
                 playing = False
 
+    print "Your total score:", total_score
     print FAREWELL_MESSAGE
