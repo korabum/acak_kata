@@ -4,7 +4,13 @@ from random import *
 FILENAME = "words"
 FAREWELL_MESSAGE = "Thank you for playing! :)"
 WELCOME_MESSAGE = "Welcome to Acak Kata! Preparing words..."
+
+INF = 2000000
 MAX_GUESS = 10
+MIN_WORD_LENGTH = {"EASY": 2, "MEDIUM": 6, "HARD": 11}
+MAX_WORD_LENGTH = {"EASY": 5, "MEDIUM": 10, "HARD": INF}
+
+DIFFICULITIES = ["EASY", "MEDIUM", "HARD"]
 
 # Scramble a word
 def scramble(s):
@@ -19,11 +25,23 @@ if __name__ == "__main__":
     with open(FILENAME) as f:
         wordlist = f.read().split()
 
+        # Choose difficulity first
+        difficulity = ""
+        while difficulity not in DIFFICULITIES:
+            difficulity = raw_input("Select your difficulity (EASY / MEDIUM / HARD): ").upper()
+
+        min_length = MIN_WORD_LENGTH[difficulity]
+        max_length = MAX_WORD_LENGTH[difficulity]
+
         playing = True
 
         # Start the game loop
         while playing:
-            word = wordlist[randint(0, len(wordlist) - 1)].lower() # Select a random word from the dictionary
+            # Select a random word from the dictionary
+            word = wordlist[randint(0, len(wordlist) - 1)].lower()
+            while not(min_length <= len(word) <= max_length):
+                word = wordlist[randint(0, len(wordlist) - 1)].lower()
+
             scrambled_word = scramble(word) # Scramble the word
 
             print "Word to guess:", scrambled_word
