@@ -23,58 +23,60 @@ def scramble(s):
 if __name__ == "__main__":
     print WELCOME_MESSAGE
 
+    # Retrieve the wordlist from a text file
+    wordlist = list()
     with open(FILENAME) as f:
         wordlist = f.read().split()
 
-        # Choose difficulity first
-        difficulity = ""
-        while difficulity not in DIFFICULITIES:
-            difficulity = raw_input("Select your difficulity (EASY / MEDIUM / HARD): ").upper()
+    # Choose difficulity first
+    difficulity = ""
+    while difficulity not in DIFFICULITIES:
+        difficulity = raw_input("Select your difficulity (EASY / MEDIUM / HARD): ").upper()
 
-        min_length = MIN_WORD_LENGTH[difficulity]
-        max_length = MAX_WORD_LENGTH[difficulity]
-        base_score = SCORE_PER_DIFFICULITY[difficulity]
+    min_length = MIN_WORD_LENGTH[difficulity]
+    max_length = MAX_WORD_LENGTH[difficulity]
+    base_score = SCORE_PER_DIFFICULITY[difficulity]
 
-        playing = True
-        total_score = 0
+    playing = True
+    total_score = 0
 
-        # Start the game loop
-        while playing:
-            # Select a random word from the dictionary
+    # Start the game loop
+    while playing:
+        # Select a random word from the dictionary
+        word = wordlist[randint(0, len(wordlist) - 1)].lower()
+        while not(min_length <= len(word) <= max_length):
             word = wordlist[randint(0, len(wordlist) - 1)].lower()
-            while not(min_length <= len(word) <= max_length):
-                word = wordlist[randint(0, len(wordlist) - 1)].lower()
 
-            scrambled_word = scramble(word) # Scramble the word
+        scrambled_word = scramble(word) # Scramble the word
 
-            print "Word to guess:", scrambled_word
+        print "Word to guess:", scrambled_word
 
-            guesses_left = MAX_GUESS
-            correct = False
+        guesses_left = MAX_GUESS
+        correct = False
 
-            # Player's turn to guess
-            while guesses_left > 0 and not(correct):
-                guess = raw_input("Your guess: ")
+        # Player's turn to guess
+        while guesses_left > 0 and not(correct):
+            guess = raw_input("Your guess: ")
 
-                if guess == word:
-                    correct = True
-                    total_score += base_score * guesses_left
-                    print "Correct!"
+            if guess == word:
+                correct = True
+                total_score += base_score * guesses_left
+                print "Correct!"
+            else:
+                guesses_left -= 1
+
+                if guesses_left == 0:
+                    print "Wrong! The correct answer is:", word
                 else:
-                    guesses_left -= 1
+                    print "Wrong! Number of guesses left:", guesses_left
 
-                    if guesses_left == 0:
-                        print "Wrong! The correct answer is:", word
-                    else:
-                        print "Wrong! Number of guesses left:", guesses_left
+        play_again = ""
 
-            play_again = ""
+        while play_again != "YES" and play_again != "NO":
+            play_again = raw_input("Play again? [YES/NO] ").upper()
 
-            while play_again != "YES" and play_again != "NO":
-                play_again = raw_input("Play again? [YES/NO] ").upper()
-
-            if play_again == "NO":
-                playing = False
+        if play_again == "NO":
+            playing = False
 
     print "Your total score:", total_score
     print FAREWELL_MESSAGE
